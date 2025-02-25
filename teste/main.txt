@@ -1,0 +1,44 @@
+package main
+
+import (
+	"fmt"
+	"strconv"
+)
+
+// func convertAndSum(a int, b string) int {
+// 	i, _ := strconv.Atoi(b) // escondendo a variavel de retorno do erro
+
+//		return a + i
+//	}
+
+
+func main() {
+	
+	// print de lista
+	nomes := []string{"Bruno", "joes", "abner", "roberto"}
+	fmt.Println(nomes)
+	fmt.Println(nomes[0])
+	
+	//explicaçao barato Array de bytes com Ç quebrando em 2 caracteres 
+	a := "aça"
+	fmt.Printf("TAMANHO %d\n", len(a))
+	b := []byte(a)
+	fmt.Printf("tamanho: %v, | %v\n", len(b), b)
+
+	//teste maps
+	nai := make(map[string]uint8)
+	for i := 0; i < len(nomes); i++ {
+		nai[nomes[i]] = 12
+	}
+	fmt.Println(nai)
+	fmt.Println(returnMapNameAndAge("gabriel", 12))
+	arrayMaps := []map[string]int8{}
+
+	var i int8
+	for i < 12 {
+		arrayMaps = append(arrayMaps, returnMapNameAndAge(strconv.Itoa(int(i)), i))
+		i++
+	}
+	fmt.Println(arrayMaps)
+	fmt.Println(arrayMaps[3]["3"])
+}
