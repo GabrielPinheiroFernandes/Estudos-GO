@@ -19,6 +19,10 @@ type Pessoa struct {
 	Idade int
 	Status bool
 }
+func (p Pessoa) String() string{
+	return fmt.Sprintf("Olá, meu nome é %s e eu tenho %d anos de idade.",p.Nome,p.Idade)
+}
+
 
 type PessoaFisica struct {
 	Pessoa
@@ -35,14 +39,10 @@ type PessoaJuridica struct {
 	RazaoSocial string
 	Cnpj string
 }
-
 func (pj PessoaJuridica) Doc() string{
 	return fmt.Sprintf("Meu CNPJ é %s",pj.Cnpj)
 }
 
-func (p Pessoa) String() string{
-	return fmt.Sprintf("Olá, meu nome é %s e eu tenho %d anos de idade.",p.Nome,p.Idade)
-}
 
 
 func (t TV) MudarDeCanal(c interfaces.Controle) {
