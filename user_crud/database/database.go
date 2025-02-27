@@ -13,7 +13,6 @@ var (
 
 func init() {
 	UserTable = []structures.User{}
-	sqliteInit()
 }
 
 func sqliteInit() {
@@ -30,7 +29,7 @@ func sqliteInit() {
 
 	// Itera sobre os resultados da query
 	for rows.Next() {
-		
+
 		var id int
 		var username string
 

@@ -26,11 +26,10 @@ func (c *Controller) Run() {
 	ids := []int{}
 	for i := 0; i < 10; i++ {
 		user = structures.User{
-			Id:       i + 1,
 			Name:     "Gabriel Pinheiro",
 			Username: "GabGamer",
 			Pass:     "123",
-			Image:    "linkAws.com.br",
+			ImagePath:    "linkAws.com.br",
 		}
 		data, err := c.UserRepository.AddUser(user)
 		if err != nil {

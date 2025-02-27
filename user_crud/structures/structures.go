@@ -5,6 +5,6 @@ type User struct {
 	Name     string
 	Username string
 	Pass     string
-	Image    string
+	ImagePath    string
 }
 

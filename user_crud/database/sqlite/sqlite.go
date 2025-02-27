@@ -2,6 +2,8 @@ package sqlite
 
 import (
 	"database/sql"
+	"fmt"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -34,18 +36,19 @@ func close(db *sql.DB) error {
 
 func ExecQuerySqlite(sqlQuery string, params []interface{}) (*sql.Rows, error) {
 	// Estabelece a conexão com o banco de dados
-	db, err := connect()
+	db, err := connect() // A função connect() deve retornar uma *sql.DB
 	if err != nil {
+		fmt.Println("Houve algum erro de conexão:", err)
 		return nil, err
 	}
-	defer close(db) // Garante que a conexão será fechada ao final da execução
+	defer db.Close() // Garante que a conexão será fechada ao final da execução
 
 	// Executa a consulta
 	rows, err := db.Query(sqlQuery, params...)
 	if err != nil {
 		return nil, err
 	}
+	// defer rows.Close() // Fecha o conjunto de linhas quando a função terminar
 
-	// Retorna as linhas da consulta
 	return rows, nil
 }
