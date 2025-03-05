@@ -58,13 +58,23 @@ func (c *Controller) Run() {
 	//============Recuperar um unico usuairo pelo id=========
 	//=======================================================
 
-	var returnUserById structures.User
-	returnUserById, err = c.UserRepository.GetUserByID(7)
+	var (
+		returnUserById structures.User
+		id_user int
+	)
+	id_user=7
+	returnUserById, err = c.UserRepository.GetUserByID(id_user)
 	if err != nil {
 		fmt.Println("Ocorreu algum erro ao tentar obter o usuario:", err)
 		// return
 	}
-	fmt.Printf("Usuario: %v \n\n", returnUserById)
+	
+	if returnUserById.Id == 0 {
+		fmt.Printf("usuario %d inexistente \n", id_user)
+	} else 
+	{
+		fmt.Printf("Usuario %v: %v \n\n", id_user,returnUserById)
+	}
 
 	//=======================================================
 	//============Deletar usuario pelo id====================
@@ -72,46 +82,24 @@ func (c *Controller) Run() {
 
 	deluser, err := c.UserRepository.DelUser(7)
 	if err != nil {
-		fmt.Printf("usuario %d inexistente \n", deluser)
+		fmt.Printf("Algo deu errado ao tentar apagar o usuario!")
 		// return
 	}
-	fmt.Printf("usuario %d deletado com sucesso! \n\n", deluser)
-
-	//=======================================================
-	//============Deletar usuario inexistente pelo id========
-	//=======================================================
-
-	deluser, err = c.UserRepository.DelUser(7)
-	if err != nil {
-		fmt.Printf("usuario %d inexistente \n\n", deluser)
-		// return
-	}
-	fmt.Printf("usuario %d deletado com sucesso! \n\n", deluser)
-
-	//=======================================================
-	//===Recuperar todos os usuarios com usuario deletado====
-	//=======================================================
-
-	data, err = c.UserRepository.GetAllUsers()
-	if err != nil {
-		fmt.Println("Ocorreu algum erro ao tentar obter todos os usuários:", err)
-		// return
-	}
-
-	for _, user := range data {
-		fmt.Println(user) // Aqui, você imprime cada usuário
-	}
-	println("")
+	fmt.Printf("usuario %d apagado no banco \n\n", deluser)
 
 	//=======================================================
 	//====tentando recuperar usuario inexistente pelo id ====
 	//=======================================================
-	returnUserById, err = c.UserRepository.GetUserByID(7)
+	usr_id:=299
+	returnUserById, err = c.UserRepository.GetUserByID(usr_id)
 	if err != nil {
 		fmt.Println("Ocorreu algum erro ao tentar obter o usuario:", err,"\n ")
 		// return
-	} else {
+	}
+	if returnUserById.Id  >= 1 {
 		fmt.Println(returnUserById)
+	} else {
+		fmt.Println("Usuario não existente")
 	}
 	println("")
 

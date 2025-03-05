@@ -6,8 +6,10 @@ import (
 )
 
 func main() {
-	// repo:=&repository.LocalUserRepository{}
-	repo:=&repository.SqliteUserRepository{}
+	
+
+	repo:=&repository.LocalUserRepository{}
+	// repo:=&repository.SqliteUserRepository{}
 	controller := controllers.NewController(repo)
 	controller.Run()
 }

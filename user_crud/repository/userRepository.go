@@ -67,7 +67,36 @@ func (lu *LocalUserRepository) DelUser(id int) (int, error) {
 //=======================================================
 
 func (s *SqliteUserRepository) GetUserByID(id int) (structures.User, error) {
-	return structures.User{}, fmt.Errorf("")
+	sql := "SELECT * FROM Users WHERE ID=?"
+	params := []interface{}{id}
+	data, err := sqlite.ExecQuerySqlite(sql, params)
+	
+	if (err != nil){
+		return structures.User{}, err
+	}
+	
+
+	var usr structures.User
+	for data.Next() {
+
+		var id int
+		var name, username, pass, imagePath string
+
+		err := data.Scan(&id, &name, &username, &pass, &imagePath)
+		if err != nil || id < 0{
+			return structures.User{}, err
+		}
+
+		unHashPass := pass
+		usr = structures.User{
+			Id:        id,
+			Name:      name,
+			Username:  username,
+			Pass:      unHashPass,
+			ImagePath: imagePath,
+		}
+	}
+	return usr, err
 }
 func (s *SqliteUserRepository) GetAllUsers() ([]structures.User, error) {
 	sql := "SELECT * FROM Users"
@@ -142,14 +171,16 @@ func (s *SqliteUserRepository) AddUser(u structures.User) (int, error) {
 }
 
 func (s *SqliteUserRepository) DelUser(id int) (int, error) {
-	sql:="DELETE FROM Users WHERE ID=?"
-	params:=[]interface{}{}
+	sql := "DELETE FROM Users WHERE ID=?"
+	params := []interface{}{id}
 
-	_,err:=sqlite.ExecQuerySqlite(sql,params)
-	
+	_, err := sqlite.ExecQuerySqlite(sql, params)
+
 	if err != nil {
+		// fmt.Print("Algo deu errado na exclusao!")
 		return 0, err
 	}
-	return id,err
+
+	return id, err
 
 }
