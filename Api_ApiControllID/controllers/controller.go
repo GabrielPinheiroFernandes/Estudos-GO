@@ -6,7 +6,6 @@ import (
 	"APIControlID/utils"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"strconv"
 
@@ -30,19 +29,6 @@ func (c *Controller) Inicialize() {
 	// Rota de teste
 	r.GET("/ping", func(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{"message": "pong"})
-	})
-
-	// Rota de teste para URLBuilder
-	r.POST("/urlteste", func(ctx *gin.Context) {
-		url, err := utils.UrlBuilder("/paozinquente", map[string]interface{}{
-			"id":        12,
-			"profissao": "roberto fotografias",
-		})
-		if err != nil {
-			ctx.JSON(500, gin.H{"message": "Falha ao gerar URL!", "erro": err.Error()})
-			return
-		}
-		ctx.JSON(200, gin.H{"URL": url})
 	})
 
 	// Criando grupo de rotas para usuário
@@ -111,8 +97,35 @@ func (c *Controller) Inicialize() {
 			})
 		}
 
-		grpRoutesUser.PUT("/edit", func(ctx *gin.Context) {
-			ctx.JSON(200,gin.H{})
+		grpRoutesUser.PUT("/edit/:id", func(ctx *gin.Context) {
+			id := ctx.Param("id")
+
+			// Convertendo ID para inteiro
+			iId, err := strconv.Atoi(id)
+			if err != nil {
+				ctx.JSON(400, gin.H{"message": "Forneça um ID válido!", "erro": err.Error()})
+				return
+			}
+
+			// Lendo o JSON do corpo da requisição
+			var user structs.User
+			if err := ctx.ShouldBindJSON(&user); err != nil {
+				ctx.JSON(400, gin.H{"message": "JSON inválido", "error": err.Error()})
+				return
+			}
+
+			// Chamando a função EditUser
+			data, err := c.crudApi.EditUser(iId, user)
+			if err != nil {
+				ctx.JSON(500, gin.H{"message": "Falha ao editar usuário!", "erro": err.Error()})
+				return
+			}
+
+			// Retornando a struct User como JSON
+			ctx.JSON(200, gin.H{
+				"id":   iId,
+				"user": string(data), // Aqui o `data` é uma struct User que será automaticamente convertida para JSON
+			})
 		})
 
 		// Deletar usuário
@@ -131,21 +144,22 @@ func (c *Controller) Inicialize() {
 
 			ctx.JSON(200, gin.H{"message": "Usuário deletado com sucesso", "id": id})
 		})
+
 		r.POST("api/v1/notifications", func(ctx *gin.Context) {
 			ctx.JSON(200, gin.H{})
 		})
 		controlIDNotifications := r.Group("/api/notifications")
 		{
 			controlIDNotifications.POST("/dao", func(ctx *gin.Context) {
-				printRequest(ctx, "/dao")
+				utils.PrintRequest(ctx, "/dao")
 			})
 
 			controlIDNotifications.POST("/door", func(ctx *gin.Context) {
-				printRequest(ctx, "/door")
+				utils.PrintRequest(ctx, "/door")
 			})
 
 			controlIDNotifications.POST("/secbox", func(ctx *gin.Context) {
-				printRequest(ctx, "/secbox")
+				utils.PrintRequest(ctx, "/secbox")
 			})
 		}
 	}
@@ -153,26 +167,4 @@ func (c *Controller) Inicialize() {
 	// Inicia o servidor na porta 8080
 	r.Run(":8080")
 
-}
-
-// Função para imprimir tudo que chega na requisição
-func printRequest(ctx *gin.Context, r string) {
-	// Pegando o corpo da requisição
-	bodyBytes, _ := io.ReadAll(ctx.Request.Body)
-
-	// Recriando o corpo da requisição para evitar perda de dados
-	ctx.Request.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
-
-	// Printando os dados no console
-	fmt.Println("===================================" + r + "==========================================")
-	println("Headers:", ctx.Request.Header)
-	println("Query Params:", ctx.Request.URL.Query())
-	println("Body:", string(bodyBytes))
-
-	// Respondendo a requisição com os mesmos dados recebidos
-	ctx.JSON(200, gin.H{
-		"headers": ctx.Request.Header,
-		"query":   ctx.Request.URL.Query(),
-		"body":    string(bodyBytes),
-	})
 }

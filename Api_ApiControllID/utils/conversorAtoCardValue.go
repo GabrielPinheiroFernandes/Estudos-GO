@@ -1,4 +1,4 @@
-package crudapi
+package utils
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 )
 
 // ConvertCard converte o número do cartão baseado no formato
-func convertCard(cardNumber string) string {
+func ConvertCard(cardNumber string) string {
 	if strings.Contains(cardNumber, ",") {
 		return convertWgToCardValue(cardNumber)
 	} else if match, _ := regexp.MatchString("[a-fA-F]", cardNumber); match {
