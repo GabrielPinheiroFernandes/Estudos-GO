@@ -12,7 +12,7 @@ import (
 
 func AddUser(u structs.User, token string) ([]byte, error) {
 	// Construir URL da API para criação de usuário
-	url, _ := utils.UrlBuilder("/create_objects.fcgi", map[string]interface{}{"session": token})
+	url, _ := utils.BuildUrl("/create_objects.fcgi", map[string]interface{}{"session": token})
 	fmt.Print(url)
 	// Criar corpo da requisição para adicionar usuário
 	userBody := map[string]interface{}{
@@ -60,7 +60,7 @@ func DelUser(userID int, token string) error {
 	// ===========================
 	// 2ª Requisição: Deletar Usuário
 	// ===========================
-	urlDelUser, err := utils.UrlBuilder("/destroy_objects.fcgi", map[string]interface{}{"session": token})
+	urlDelUser, err := utils.BuildUrl("/destroy_objects.fcgi", map[string]interface{}{"session": token})
 	if err != nil {
 		return fmt.Errorf("erro ao montar a requisiçao: %v", err)
 	}
@@ -97,7 +97,7 @@ func DelUser(userID int, token string) error {
 
 func EditUser(userID int, token string, u structs.User) ([]byte, error) {
 	// Construir a URL com o token de sessão
-	url, err := utils.UrlBuilder("/modify_objects.fcgi", map[string]interface{}{"session": token})
+	url, err := utils.BuildUrl("/modify_objects.fcgi", map[string]interface{}{"session": token})
 	if err != nil {
 		return nil, err
 	}

@@ -8,7 +8,7 @@ import (
 )
 
 // UrlBuilder constrói uma URL com base nos parâmetros fornecidos
-func UrlBuilder(route string, params ...map[string]interface{}) (string, error) {
+func BuildUrl(route string, params ...map[string]interface{}) (string, error) {
 	// Se não houver parâmetros, apenas retorne a URL base
 	if len(params) == 0 {
 		return route, nil
@@ -32,7 +32,7 @@ func UrlBuilder(route string, params ...map[string]interface{}) (string, error) 
 	// Remove o último '&' extra
 	queryParams = queryParams[:len(queryParams)-1]
 
-	urlBase:=os.Getenv("API_URL")
+	urlBase := os.Getenv("API_URL")
 	// fmt.Println(urlBase + route + queryParams)
 	// Retorne a URL com os parâmetros
 	return urlBase + route + queryParams, nil

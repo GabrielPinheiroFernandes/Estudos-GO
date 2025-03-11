@@ -12,7 +12,7 @@ import (
 func AddUserGroup(userID int, token string) ([]byte, error) {
 
 	// **Segunda requisição para adicionar o usuário a um grupo**
-	groupURL, _ := utils.UrlBuilder("/create_objects.fcgi", map[string]interface{}{"session": token})
+	groupURL, _ := utils.BuildUrl("/create_objects.fcgi", map[string]interface{}{"session": token})
 	// Criar corpo da requisição para adicionar o usuário ao grupo
 	groupBody := map[string]interface{}{
 		"object": "user_groups",

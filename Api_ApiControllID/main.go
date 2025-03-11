@@ -9,7 +9,7 @@ import (
 func main() {
 	crudApi, err := crudapi.NewControlIdCrudApi()
 	if err != nil {
-		log.Fatalf("Erro ao criar controller")
+		log.Fatalf("Erro ao criar a crud api")
 	}
 	controller := controllers.NewController(crudApi)
 	controller.Inicialize()

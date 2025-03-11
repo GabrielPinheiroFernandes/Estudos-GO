@@ -13,7 +13,7 @@ import (
 func AddImage(img []byte, token string, id int) ([]byte, error) {
 	sId := strconv.Itoa(id)
 
-	url, err := utils.UrlBuilder("/user_set_image.fcgi", map[string]interface{}{"session": token, "user_id": sId})
+	url, err := utils.BuildUrl("/user_set_image.fcgi", map[string]interface{}{"session": token, "user_id": sId})
 
 	fmt.Println(url)
 	// Criar um buffer para os dados da imagem
@@ -41,7 +41,7 @@ func AddImage(img []byte, token string, id int) ([]byte, error) {
 
 func DelImage(userID int, token string) error {
 
-	urlDelImage, err := utils.UrlBuilder("/user_destroy_image.fcgi", map[string]interface{}{"session": token})
+	urlDelImage, err := utils.BuildUrl("/user_destroy_image.fcgi", map[string]interface{}{"session": token})
 	if err != nil {
 		return fmt.Errorf("erro ao montar a requisiçao: %v", err)
 

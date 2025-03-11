@@ -14,7 +14,7 @@ func AddUserCard(userID int, token string, cv string) ([]byte, error) {
 	cardval := utils.ConvertCard(cv)
 
 	// URL da API para criar o cartão
-	cardUrl, _ := utils.UrlBuilder("/create_objects.fcgi", map[string]interface{}{"session": token})
+	cardUrl, _ := utils.BuildUrl("/create_objects.fcgi", map[string]interface{}{"session": token})
 
 	// Criar o corpo da requisição para adicionar o cartão
 	icardVal, err := strconv.Atoi(cardval)
@@ -52,5 +52,5 @@ func AddUserCard(userID int, token string, cv string) ([]byte, error) {
 		return nil, fmt.Errorf("erro na resposta HTTP do cartão, código: %d", resp.StatusCode)
 	}
 
-	return cardBodyJSON,nil
+	return cardBodyJSON, nil
 }
