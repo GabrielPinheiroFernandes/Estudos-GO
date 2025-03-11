@@ -1,4 +1,4 @@
-package crudapi
+package requests
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func getToken() (string,error) {
+func GetToken() (string, error) {
 
 	// Carregar variáveis de ambiente
 	err := godotenv.Load()
@@ -60,5 +60,5 @@ func getToken() (string,error) {
 	}
 
 	// Retornar a instância com o token
-	return token,nil
+	return token, nil
 }

@@ -33,6 +33,7 @@ func UrlBuilder(route string, params ...map[string]interface{}) (string, error) 
 	queryParams = queryParams[:len(queryParams)-1]
 
 	urlBase:=os.Getenv("API_URL")
+	// fmt.Println(urlBase + route + queryParams)
 	// Retorne a URL com os parâmetros
 	return urlBase + route + queryParams, nil
 }
